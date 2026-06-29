@@ -40,7 +40,7 @@ public class Control : MonoBehaviour
         // int direction = 1 [accl], 0 [deccl], -1 [brake];
         float vfwd = Vector3.Dot(rb.linearVelocity, transform.forward);
         bool canMove = direction == -1 ?
-            (Math.Abs(vfwd) > 0.01) :
+            (Math.Abs(vfwd) > 0.0001) :
             (direction == 0 ?
                 vfwd > maxSpeedNeg :
                 vfwd < maxSpeedPos
@@ -62,7 +62,7 @@ public class Control : MonoBehaviour
         omegaLocal = new Vector3(omegaLocal.x, direction * vfwd / turnRadius, omegaLocal.z);
 
         rb.angularVelocity = transform.localToWorldMatrix * omegaLocal;
-        if (Math.Abs(vlr) > 0.01)
+        if (Math.Abs(vlr) > 0.0001)
             rb.AddForce(-transform.right * rb.mass * turnAcclByFriction * Math.Sign(vlr));
     }
 
