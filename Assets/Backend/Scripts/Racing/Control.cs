@@ -37,18 +37,6 @@ public class Control : MonoBehaviour
         inputEBrake = InputSystem.actions.FindAction("EBrake");
     }
 
-    void Turn(float direction, Vector3 localVelocity)
-    {
-        float turnRadius = Math.Max(localVelocity.z * localVelocity.z / turnAcclByFriction, turnRadiusV0);
-
-        Vector3 omegaLocal = transform.worldToLocalMatrix * rb.angularVelocity;
-        omegaLocal = new Vector3(omegaLocal.x, direction * localVelocity.z / turnRadius, omegaLocal.z);
-
-        rb.angularVelocity = transform.localToWorldMatrix * omegaLocal;
-        if (Math.Abs(localVelocity.x) > 0.0001)
-            rb.AddForce(-transform.right * rb.mass * turnAcclByFriction * Math.Sign(localVelocity.x));
-    }
-
     void Update()
     {
         Vector3 localVelocity = transform.worldToLocalMatrix * rb.linearVelocity;
