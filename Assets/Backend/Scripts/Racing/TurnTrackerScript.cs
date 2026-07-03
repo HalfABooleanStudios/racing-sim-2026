@@ -7,6 +7,10 @@ public class TurnTrackerScript : MonoBehaviour
 
     public float lastCrossedTime = float.NaN;
 
+    [Header("Penalties")]
+    public bool isDNF = false;
+    public float tiemPenalty = 5F;
+
     private RaceManager raceManager;
 
     void Start()

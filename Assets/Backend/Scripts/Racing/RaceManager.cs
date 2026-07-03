@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public class RaceManager : MonoBehaviour
 {
@@ -38,8 +39,27 @@ public class RaceManager : MonoBehaviour
 
     float CalculateLapTime(float timeToPassFinish)
     {
-        // TODO: 
-        return timeToPassFinish - lastTimeToPassStart;
+        float penalties = 0F;
+        int numCheckpoints = checkpoints.Count;
+        bool[] seenCheckpoints = new bool[numCheckpoints];
+
+        // First mark which all checkpoints are seen
+        foreach (TurnTrackerScript checkpointCrossed in checkpointsCrossed)
+        {
+            int idx = checkpoints.IndexOf(checkpointCrossed);
+            if (idx == -1) continue;
+            seenCheckpoints[idx] = true;
+        }
+
+        // Second tally penalties for unseen checkpoints
+        for (int i=0; i < numCheckpoints; i++)
+        {
+            if (seenCheckpoints[i]) continue;
+            if (checkpoints[i].isDNF) return float.PositiveInfinity;
+            penalties += checkpoints[i].tiemPenalty;
+        }
+
+        return timeToPassFinish - lastTimeToPassStart + penalties;
     }
 
     public void FlagPlayerCrossedTurn(TurnTrackerScript turn)
@@ -49,6 +69,7 @@ public class RaceManager : MonoBehaviour
         if (turn.isFinish && !float.IsNaN(lastTimeToPassStart))
         {
             float lapTime = CalculateLapTime(turn.lastCrossedTime);
+            if (float.IsInfinity(lapTime)) Debug.Log("DNF'd this lap");
             if (float.IsNaN(bestLapTime) || lapTime < bestLapTime)
             {
                 bestLapTime = lapTime;
