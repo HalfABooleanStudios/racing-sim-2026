@@ -1,6 +1,5 @@
+using TMPro;
 using System;
-using Unity.Mathematics;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -19,9 +18,12 @@ public class Control : MonoBehaviour
     [Tooltip("in m/s^2; equal to mu * g")]
     public float turnAcclByFriction = 9.81F;
 
+    public TMP_Text speedText;
     private Rigidbody rb;
     private InputAction inputMove;
     private InputAction inputEBrake;
+
+    private const float mps_to_kmph = 3.6F;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -35,51 +37,56 @@ public class Control : MonoBehaviour
         inputEBrake = InputSystem.actions.FindAction("EBrake");
     }
 
-    bool TryMoveFB(int direction)
+    void Turn(float direction, Vector3 localVelocity)
     {
-        // int direction = 1 [accl], 0 [deccl], -1 [brake];
-        float vfwd = Vector3.Dot(rb.linearVelocity, transform.forward);
-        bool canMove = direction == -1 ?
-            (Math.Abs(vfwd) > 0.0001) :
-            (direction == 0 ?
-                vfwd > maxSpeedNeg :
-                vfwd < maxSpeedPos
-            );
-        if (!canMove) return false;
-        rb.AddForce(transform.forward *
-            (direction == -1 ? Math.Sign(vfwd) * decclBrake : (direction == 0 ? deccl : accl)));
-        return true;
-    }
-
-    void Turn(float direction)
-    {
-        float vfwd = Vector3.Dot(rb.linearVelocity, transform.forward);
-        float vlr = Vector3.Dot(rb.linearVelocity - transform.forward * vfwd, transform.right);
-
-        float turnRadius = Math.Max(vfwd * vfwd / turnAcclByFriction, turnRadiusV0);
+        float turnRadius = Math.Max(localVelocity.z * localVelocity.z / turnAcclByFriction, turnRadiusV0);
 
         Vector3 omegaLocal = transform.worldToLocalMatrix * rb.angularVelocity;
-        omegaLocal = new Vector3(omegaLocal.x, direction * vfwd / turnRadius, omegaLocal.z);
+        omegaLocal = new Vector3(omegaLocal.x, direction * localVelocity.z / turnRadius, omegaLocal.z);
 
         rb.angularVelocity = transform.localToWorldMatrix * omegaLocal;
-        if (Math.Abs(vlr) > 0.0001)
-            rb.AddForce(-transform.right * rb.mass * turnAcclByFriction * Math.Sign(vlr));
+        if (Math.Abs(localVelocity.x) > 0.0001)
+            rb.AddForce(-transform.right * rb.mass * turnAcclByFriction * Math.Sign(localVelocity.x));
     }
 
-    // Update is called once per frame
     void Update()
+    {
+        Vector3 localVelocity = transform.worldToLocalMatrix * rb.linearVelocity;
+        speedText.text = Math.Round(localVelocity.z * mps_to_kmph, 1).ToString() + " km/h";
+    }
+
+    void FixedUpdate()
     {
         Vector2 moveCommand = inputMove.ReadValue<Vector2>();
         float brakeCommand = inputEBrake.ReadValue<float>();
 
+        Vector3 localVelocity = transform.worldToLocalMatrix * rb.linearVelocity;
+        Vector3 localAngular = transform.worldToLocalMatrix * rb.angularVelocity;
+
+        Vector3 localAccl = Vector3.zero;
+
         if (brakeCommand == 1)
         {
             // Do some fun particles if also trying to move with WASD
-            TryMoveFB(-1);
+            if (Math.Abs(localVelocity.z) < 0.5) localVelocity.z = 0;
+            else localAccl.z = -decclBrake * Math.Sign(localVelocity.z);
         }
-        else if (moveCommand.y > 0.2) TryMoveFB(1);
-        else if (moveCommand.y < -0.2) TryMoveFB(0);
+        else if (Math.Abs(moveCommand.y) > 0.2 && (
+            (moveCommand.y < 0 && localVelocity.z > -maxSpeedNeg) ||
+            (moveCommand.y > 0 && localVelocity.z < maxSpeedPos)
+        ))
+        {
+            localAccl.z = ((moveCommand.y * localVelocity.z > 0) ? accl : -deccl) * Math.Sign(localVelocity.z);
+        }
 
-        Turn(moveCommand.x);
+        float turnRadius = Math.Max(localVelocity.z * localVelocity.z / turnAcclByFriction, turnRadiusV0);
+        localAngular.y = moveCommand.x * localVelocity.z / turnRadius;
+
+        if (Math.Abs(localVelocity.x) < 0.5) localVelocity.x = 0;
+        else localAccl.x = -turnAcclByFriction * Math.Sign(localVelocity.x);
+
+        rb.angularVelocity = transform.localToWorldMatrix * localAngular;
+        rb.linearVelocity = transform.localToWorldMatrix * localVelocity;
+        rb.AddForce(rb.mass * (transform.localToWorldMatrix * localAccl));
     }
 }
