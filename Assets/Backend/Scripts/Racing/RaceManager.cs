@@ -16,7 +16,6 @@ public class RaceManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
-    
     private List<TurnTrackerScript> checkpoints = new();
     private List<TurnTrackerScript> checkpointsCrossed = new();
     private float lastTimeToPassStart = float.NaN;
