@@ -2,9 +2,11 @@ using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.HighDefinition;
 
 public class Control : MonoBehaviour
 {
+
     [Header("Accelerations")]
     public float accl;
     public float deccl;
@@ -22,9 +24,12 @@ public class Control : MonoBehaviour
     public float turnAcclByFriction = 9.81F;
 
     [Header("Ground Qualities")]
+    public LayerMask trackLayer;
     public GroundSpeedModifier asphaltModifier = default;
     public GroundSpeedModifier gravelModifier = default;
-    [SerializeField]
+
+    private Vector3 carSize;
+    private bool isOnGround = true;
     private bool isOnTrack = true;
     private GroundSpeedModifier currentModifier {
         get => isOnTrack ? asphaltModifier : gravelModifier;
@@ -76,16 +81,36 @@ public class Control : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
         inputMove = InputSystem.actions.FindAction("Move");
         inputEBrake = InputSystem.actions.FindAction("EBrake");
+
+        carSize = GetComponent<BoxCollider>().size;
     }
 
     void Update()
     {
         Vector3 localVelocity = transform.worldToLocalMatrix * rb.linearVelocity;
         speedText.text = Math.Round(localVelocity.z * mps_to_kmph, 1).ToString() + " km/h";
+
+        RaycastHit[] hits = Physics.BoxCastAll(transform.position, carSize/2, -transform.up, transform.rotation, carSize.y);
+        isOnGround = hits.Length != 0;
+        isOnTrack = false;
+        foreach (RaycastHit hit in hits) {
+            if (hit.transform.tag == "Track")
+            {
+                isOnTrack = true;
+                break;
+            }
+        }
+        // isOnGround = Physics.BoxCast(
+        //     transform.position, carSize/2, -transform.up, transform.rotation, 2*carSize.y);
+        // isOnTrack = isOnGround ? Physics.BoxCast(
+        //     transform.position, carSize/2, -transform.up, transform.rotation, 2*carSize.y, trackLayer
+        //     ) : false;
     }
 
     void FixedUpdate()
     {
+        if (!isOnGround) return;
+
         Vector2 moveCommand = inputMove.ReadValue<Vector2>();
         float brakeCommand = inputEBrake.ReadValue<float>();
 
@@ -121,21 +146,5 @@ public class Control : MonoBehaviour
         rb.angularVelocity = transform.localToWorldMatrix * localAngular;
         rb.linearVelocity = transform.localToWorldMatrix * localVelocity;
         rb.AddForce(rb.mass * (transform.localToWorldMatrix * localAccl));
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Track" || other.transform.parent.tag == "Track")
-        {
-            isOnTrack = true;
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Track" || other.transform.parent.tag == "Track")
-        {
-            isOnTrack = false;
-        }
     }
 }
