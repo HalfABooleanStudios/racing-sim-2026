@@ -3845,7 +3845,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Control
   accl: 11
   deccl: 25
-  decclIdle: 2.8
+  decclIdle: 6.7
   decclBrake: 25
   maxSpeedPos: 100
   maxSpeedNeg: 10
