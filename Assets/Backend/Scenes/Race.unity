@@ -1969,6 +1969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec5f598e436a8a540b3b4c122c2c4179, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RaceManager
+  carSize: {x: 0, y: 0, z: 0}
 --- !u!4 &862614432
 Transform:
   m_ObjectHideFlags: 0
@@ -3843,17 +3844,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db74461fce4690943a6ab1257e419c16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Control
-  accl: 11
-  deccl: 25
-  decclIdle: 6.7
-  decclBrake: 25
-  maxSpeedPos: 100
-  maxSpeedNeg: 10
-  turnRadiusV0: 10
-  turnAcclByFriction: 26
-  trackLayer:
-    serializedVersion: 2
-    m_Bits: 0
+  carProfile: {fileID: 11400000, guid: 38d5bcd69270be446aba1b6d7c660135, type: 2}
   asphaltModifier: {fileID: 11400000, guid: 6af001b0a9bb56a40938e359a7825297, type: 2}
   gravelModifier: {fileID: 11400000, guid: 1a083cc0cb20bff41b731d3dfbac55c9, type: 2}
   speedText: {fileID: 750575888}
@@ -3986,7 +3977,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 826267fadfd8f334d82645d6a88fa0bc, type: 3}
       propertyPath: m_TagString
-      value: Track
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 7715626668051313982, guid: 826267fadfd8f334d82645d6a88fa0bc, type: 3}
       propertyPath: m_Layer

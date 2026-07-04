@@ -3,36 +3,21 @@ using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.HighDefinition;
+using UnityEngine.InputSystem.XR.Haptics;
+using System.Threading;
 
 public class Control : MonoBehaviour
 {
 
-    [Header("Accelerations")]
-    public float accl;
-    public float deccl;
-    public float decclIdle;
-    public float decclBrake;
-
-    [Header("Speeds")]
-    public float maxSpeedPos;
-    public float maxSpeedNeg;
-
-    [Header("Turning")]
-    [Tooltip("in m; least turning radius, usually L * cot(theta) + 1m")]
-    public float turnRadiusV0 = 0F;
-    [Tooltip("in m/s^2; equal to mu * g")]
-    public float turnAcclByFriction = 9.81F;
+    public CarProfile carProfile;
 
     [Header("Ground Qualities")]
-    public LayerMask trackLayer;
     public GroundSpeedModifier asphaltModifier = default;
     public GroundSpeedModifier gravelModifier = default;
 
     private Vector3 carSize;
-    private bool isOnGround = true;
-    private bool isOnTrack = true;
     private GroundSpeedModifier currentModifier {
-        get => isOnTrack ? asphaltModifier : gravelModifier;
+        get => RaceManager.Instance.isOnTrack ? asphaltModifier : gravelModifier;
     }
 
     public TMP_Text speedText;
@@ -45,8 +30,8 @@ public class Control : MonoBehaviour
 
     private float GetMaxSpeed(int direction)
     {
-        if (direction == 1) return maxSpeedPos * currentModifier.maxSpeedPosMul;
-        if (direction == -1) return -maxSpeedNeg * currentModifier.maxSpeedNegMul;
+        if (direction == 1) return carProfile.maxSpeedPos * currentModifier.maxSpeedPosMul;
+        if (direction == -1) return -carProfile.maxSpeedNeg * currentModifier.maxSpeedNegMul;
         return 0;
     }
 
@@ -55,13 +40,13 @@ public class Control : MonoBehaviour
         switch (magnitude)
         {
             case 1:
-                return accl * currentModifier.acclMul;
+                return carProfile.accl * currentModifier.acclMul;
             case 0:
-                return -decclIdle * currentModifier.decclIdleMul;
+                return -carProfile.decclIdle * currentModifier.decclIdleMul;
             case -1:
-                return -deccl * currentModifier.decclMul;
+                return -carProfile.deccl * currentModifier.decclMul;
             case -2:
-                return -decclBrake * currentModifier.decclBrakeMul;
+                return -carProfile.decclBrake * currentModifier.decclBrakeMul;
             default:
                 return 0;
         }
@@ -69,57 +54,26 @@ public class Control : MonoBehaviour
 
     private float GetTurnAccl()
     {
-        return turnAcclByFriction * currentModifier.turnAcclByFrictionMul;
+        return carProfile.turnAcclByFriction * currentModifier.turnAcclByFrictionMul;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        turnRadiusV0 = Math.Abs(turnRadiusV0);
-        turnAcclByFriction = Math.Abs(turnAcclByFriction);
-
         rb = gameObject.GetComponent<Rigidbody>();
         inputMove = InputSystem.actions.FindAction("Move");
         inputEBrake = InputSystem.actions.FindAction("EBrake");
-
-        carSize = GetComponent<BoxCollider>().size;
     }
 
     void Update()
     {
         Vector3 localVelocity = transform.worldToLocalMatrix * rb.linearVelocity;
         speedText.text = Math.Round(localVelocity.z * mps_to_kmph, 1).ToString() + " km/h";
-
-        RaycastHit[] hits = Physics.BoxCastAll(transform.position, carSize/2, -transform.up, transform.rotation, carSize.y);
-        isOnGround = hits.Length != 0;
-        isOnTrack = false;
-        foreach (RaycastHit hit in hits) {
-            if (hit.transform.tag == "Track")
-            {
-                isOnTrack = true;
-                break;
-            }
-        }
-        // isOnGround = Physics.BoxCast(
-        //     transform.position, carSize/2, -transform.up, transform.rotation, 2*carSize.y);
-        // isOnTrack = isOnGround ? Physics.BoxCast(
-        //     transform.position, carSize/2, -transform.up, transform.rotation, 2*carSize.y, trackLayer
-        //     ) : false;
     }
 
-    void FixedUpdate()
+    void MoveFB(Vector3 moveCommand, ref Vector3 localVelocity, ref Vector3 localAccl)
     {
-        if (!isOnGround) return;
-
-        Vector2 moveCommand = inputMove.ReadValue<Vector2>();
-        float brakeCommand = inputEBrake.ReadValue<float>();
-
-        Vector3 localVelocity = transform.worldToLocalMatrix * rb.linearVelocity;
-        Vector3 localAngular = transform.worldToLocalMatrix * rb.angularVelocity;
-
-        Vector3 localAccl = Vector3.zero;
-
-        if (brakeCommand == 1)
+        if (moveCommand.z == 1)
         {
             // Do some fun particles if also trying to move with WASD
             if (Math.Abs(localVelocity.z) < 0.5) localVelocity.z = 0;
@@ -136,12 +90,36 @@ public class Control : MonoBehaviour
             if (Math.Abs(localVelocity.z) < 0.5) localVelocity.z = 0;
             else localAccl.z = GetAccl(0) * Math.Sign(localVelocity.z);
         }
+    }
 
-        float turnRadius = Math.Max(localVelocity.z * localVelocity.z / GetTurnAccl(), turnRadiusV0);
+    void Turn(Vector3 moveCommand, ref Vector3 localVelocity,
+              ref Vector3 localAngular, ref Vector3 localAccl)
+    {
+        float turnRadius = Math.Max(
+            localVelocity.z * localVelocity.z / GetTurnAccl(),
+            carProfile.turnRadiusV0); // With smartsteer
+        // float turnRadius = carProfile.turnRadiusV0; // Without smartsteer
         localAngular.y = moveCommand.x * localVelocity.z / turnRadius;
 
         if (Math.Abs(localVelocity.x) < 0.5) localVelocity.x = 0;
         else localAccl.x = -GetTurnAccl() * Math.Sign(localVelocity.x);
+    }
+
+    void FixedUpdate()
+    {
+        if (!RaceManager.Instance.isOnGround) return;
+
+        Vector3 moveCommand = inputMove.ReadValue<Vector2>();
+        moveCommand.z = inputEBrake.ReadValue<float>();
+        // moveCommand: x::turn, y::accl, z::(e)brake
+
+        Vector3 localVelocity = transform.worldToLocalMatrix * rb.linearVelocity;
+        Vector3 localAngular = transform.worldToLocalMatrix * rb.angularVelocity;
+
+        Vector3 localAccl = Vector3.zero;
+
+        MoveFB(moveCommand, ref localVelocity, ref localAccl);
+        Turn(moveCommand, ref localVelocity, ref localAngular, ref localAccl);
 
         rb.angularVelocity = transform.localToWorldMatrix * localAngular;
         rb.linearVelocity = transform.localToWorldMatrix * localVelocity;

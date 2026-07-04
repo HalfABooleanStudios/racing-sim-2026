@@ -1,6 +1,5 @@
 using UnityEngine;
 using System.Collections.Generic;
-using UnityEngine.InputSystem;
 
 public class RaceManager : MonoBehaviour
 {
@@ -17,17 +16,26 @@ public class RaceManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
+    
+    
+    public bool isOnGround { get; private set; }
+    public bool isOnTrack { get; private set; }
+
+
     private List<TurnTrackerScript> checkpoints = new();
     private List<TurnTrackerScript> checkpointsCrossed = new();
     private float lastTimeToPassStart = float.NaN;
     private float bestLapTime = float.NaN;
+    private Transform playerCar;
+    public Vector3 carSize;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         // Find checkpoints
         Transform checkpointsParent = GameObject.FindGameObjectWithTag("Track")
-            .transform.Find("Checkpoints");
+            .transform.parent.Find("Checkpoints");
         for(int i = 0; i < checkpointsParent.childCount; i++)
         {
             TurnTrackerScript turn;
@@ -35,10 +43,12 @@ public class RaceManager : MonoBehaviour
                 checkpointsParent.GetChild(i).TryGetComponent(out turn);
             if (foundComponent) checkpoints.Add(turn);
         }
+        playerCar = GameObject.FindGameObjectWithTag("Player").transform;
+        carSize = playerCar.GetComponent<BoxCollider>().size;
     }
 
     float CalculateLapTime(float timeToPassFinish)
-    {
+    {   // Checks which checkpoints have been crossed and what penalties are due
         float penalties = 0F;
         int numCheckpoints = checkpoints.Count;
         bool[] seenCheckpoints = new bool[numCheckpoints];
@@ -63,9 +73,8 @@ public class RaceManager : MonoBehaviour
     }
 
     public void FlagPlayerCrossedTurn(TurnTrackerScript turn)
-    {
+    {   // Called by TurnTrackerScript (OnTriggerEnter) when player crosses a checkpoint
         if (!checkpoints.Contains(turn)) return;
-        checkpointsCrossed.Add(turn);
         if (turn.isFinish && !float.IsNaN(lastTimeToPassStart))
         {
             float lapTime = CalculateLapTime(turn.lastCrossedTime);
@@ -75,7 +84,23 @@ public class RaceManager : MonoBehaviour
                 bestLapTime = lapTime;
             }
             Debug.Log(lapTime);
+            checkpointsCrossed.Clear();
         }
         if (turn.isStart) lastTimeToPassStart = turn.lastCrossedTime;
+        checkpointsCrossed.Add(turn);
+    }
+
+    void Update()
+    {
+        RaycastHit[] hits = Physics.BoxCastAll(playerCar.position, carSize/2, -playerCar.up, playerCar.rotation, carSize.y);
+        isOnGround = hits.Length != 0;
+        isOnTrack = false;
+        foreach (RaycastHit hit in hits) {
+            if (hit.transform.tag == "Track")
+            {
+                isOnTrack = true;
+                break;
+            }
+        }
     }
 }

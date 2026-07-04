@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27f7a9171be6893408a98ac4abd705a5, type: 3}
+  m_Name: CarProfileNascar
+  m_EditorClassIdentifier: Assembly-CSharp::CarProfile
+  accl: 7.8431377
+  deccl: 20
+  decclIdle: 6.6666665
+  decclBrake: 20
+  maxSpeedPos: 91.666664
+  maxSpeedNeg: 10
+  turnRadiusV0: 25
+  turnAcclByFriction: 14.715
