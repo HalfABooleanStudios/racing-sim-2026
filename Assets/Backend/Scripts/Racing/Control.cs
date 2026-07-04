@@ -8,6 +8,7 @@ public class Control : MonoBehaviour
     [Header("Motion")]
     public float accl;
     public float deccl;
+    public float decclIdle;
     public float decclBrake;
     public float maxSpeedPos;
     public float maxSpeedNeg;
@@ -65,6 +66,10 @@ public class Control : MonoBehaviour
         ))
         {
             localAccl.z = ((moveCommand.y * localVelocity.z > 0) ? accl : -deccl) * Math.Sign(localVelocity.z);
+        } else
+        {
+            if (Math.Abs(localVelocity.z) < 0.5) localVelocity.z = 0;
+            else localAccl.z = -decclIdle * Math.Sign(localVelocity.z);
         }
 
         float turnRadius = Math.Max(localVelocity.z * localVelocity.z / turnAcclByFriction, turnRadiusV0);
