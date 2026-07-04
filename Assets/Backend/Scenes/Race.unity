@@ -3851,6 +3851,9 @@ MonoBehaviour:
   maxSpeedNeg: 10
   turnRadiusV0: 10
   turnAcclByFriction: 26
+  asphaltModifier: {fileID: 11400000, guid: 6af001b0a9bb56a40938e359a7825297, type: 2}
+  gravelModifier: {fileID: 11400000, guid: 1a083cc0cb20bff41b731d3dfbac55c9, type: 2}
+  isOnTrack: 1
   speedText: {fileID: 750575888}
 --- !u!54 &1994310651
 Rigidbody:
@@ -3980,6 +3983,10 @@ PrefabInstance:
       value: Monza_track
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 826267fadfd8f334d82645d6a88fa0bc, type: 3}
+      propertyPath: m_TagString
+      value: Track
+      objectReference: {fileID: 0}
+    - target: {fileID: 7715626668051313982, guid: 826267fadfd8f334d82645d6a88fa0bc, type: 3}
       propertyPath: m_TagString
       value: Track
       objectReference: {fileID: 0}
