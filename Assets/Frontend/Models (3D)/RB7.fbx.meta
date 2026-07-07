@@ -8,112 +8,112 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: BRAKE
-    second: {fileID: 2100000, guid: 7ca1849ac559fe747aabf74d7c128af6, type: 2}
+    second: {fileID: 2100000, guid: 431a15a85d9e95c40aecef7b00e09c7c, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: CLEARLED
-    second: {fileID: 2100000, guid: 7db4df06cc266ea44896ccbf4ff07ae0, type: 2}
+    second: {fileID: 2100000, guid: 7fb8b300e32c1c640a688ed6f60a0dff, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: FER_BLGLOWA
-    second: {fileID: 2100000, guid: 52f48de466383ae4e82f7240f605e19b, type: 2}
+    second: {fileID: 2100000, guid: 42af71c820758564589e703a9a0de0e1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Metal
-    second: {fileID: 2100000, guid: 28453f5aca0a21548b2460e51eef097e, type: 2}
+    second: {fileID: 2100000, guid: 153a384a2bda0444283f86db5c1937f2, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Tyre_thread
-    second: {fileID: 2100000, guid: b030fde70477ca54cab6ab7cd832e436, type: 2}
+    second: {fileID: 2100000, guid: 19edb2a5d790d0247a38ef6477319c9f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: body
-    second: {fileID: 2100000, guid: 967fadf39502265448d4d0982e7e2ea7, type: 2}
+    second: {fileID: 2100000, guid: d3ceceab0024f6349b1a48554a17e21b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: body_0
-    second: {fileID: 2100000, guid: e65f22fcec9efad41a27c65aa5077aa1, type: 2}
+    second: {fileID: 2100000, guid: fa58c36452741e94da3952375b6223bf, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: c_redbull_10_steeringwheel
-    second: {fileID: 2100000, guid: 1909137c6396fae4993fbc17caf5570f, type: 2}
+    second: {fileID: 2100000, guid: e2a937f2ca576b5419ce849718366133, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: carbon_fiber
-    second: {fileID: 2100000, guid: 504afed8d0e123d42a64dce06e3604d2, type: 2}
+    second: {fileID: 2100000, guid: 52c26fc459d3b3a48976009f180eb4fe, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: cockpit
-    second: {fileID: 2100000, guid: c8ade23c3a2f88e46b6b1f68b6ce003c, type: 2}
+    second: {fileID: 2100000, guid: f8952eeab6ff263478a6f40b91327552, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: cockpit_cf
-    second: {fileID: 2100000, guid: 324ea78b7b51123429c05799a94ce373, type: 2}
+    second: {fileID: 2100000, guid: 512824f9696ae204d83b15947e4bac2b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: digi_speed
-    second: {fileID: 2100000, guid: cb91769ba0f14454f8c5913675cf22f9, type: 2}
+    second: {fileID: 2100000, guid: 867db37eec296594cb2ee303a0c305c3, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: generic_lcd
-    second: {fileID: 2100000, guid: 1c54ae5e0c8cf724c94d47e42f64ef63, type: 2}
+    second: {fileID: 2100000, guid: 615095d9617f3a247878a8fe83c48d4d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: generic_main
-    second: {fileID: 2100000, guid: 3e98ed08b24080d43af97d38ea010ec4, type: 2}
+    second: {fileID: 2100000, guid: ed98b67054c9e1d4bb15ee5f2e3585d7, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: glass
-    second: {fileID: 2100000, guid: f29be1d0a74f48840af4bf5ce1eef6c7, type: 2}
+    second: {fileID: 2100000, guid: 12a0babb0cfc8084db61170662701485, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: int_digi_inds
-    second: {fileID: 2100000, guid: 20ec641a7d58f324781cd7074f74f5da, type: 2}
+    second: {fileID: 2100000, guid: a193adce87c8a214e8bdf637651c727b, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: int_infopod
-    second: {fileID: 2100000, guid: 6cd2012c3c3f6184c99536259bf11322, type: 2}
+    second: {fileID: 2100000, guid: 7eca425ccb2eb6940b150cdc34e9e8ee, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: mirrors
-    second: {fileID: 2100000, guid: 8568752c1557a004ba894f265ffce462, type: 2}
+    second: {fileID: 2100000, guid: 6e73b65ef47bfeb45a1d440010733dfd, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: rb_rims
-    second: {fileID: 2100000, guid: e13859fe048d2a541a15a0873c7e1dbb, type: 2}
+    second: {fileID: 2100000, guid: b22846e5a3b22714592aa73e969a419a, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: steering_carbon
-    second: {fileID: 2100000, guid: ea3ae8c55b38e974b8665ecbf04134ee, type: 2}
+    second: {fileID: 2100000, guid: 5fc96e1e35cf497498f65b1bbff40b19, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: sw_decals
-    second: {fileID: 2100000, guid: 35322e709bd6a9b49a827518bcdda230, type: 2}
+    second: {fileID: 2100000, guid: f3863f2d1b2a92144997d5ec132f1ab0, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: tyre_side
-    second: {fileID: 2100000, guid: 900c7e68cce92f449a3516ebf54a21e1, type: 2}
+    second: {fileID: 2100000, guid: 74b50d3e6b9639041872af93282f3441, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -140,10 +140,10 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 200
     meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
@@ -178,7 +178,7 @@ ModelImporter:
     secondaryUVMinLightmapResolution: 40
     secondaryUVMinObjectScale: 1
     secondaryUVPackMargin: 4
-    useFileScale: 1
+    useFileScale: 0
     strictVertexDataChecks: 0
   tangentSpace:
     normalSmoothAngle: 60
@@ -201,7 +201,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 1
+    globalScale: 200
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 0
