@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 
 public class RaceManager : MonoBehaviour
 {
@@ -36,11 +37,18 @@ public class RaceManager : MonoBehaviour
     private float lastTimeToPassStart = float.NaN;
     private float bestLapTime = float.NaN;
     private Transform playerCar;
+    private Vector3 playerInitialPos;
+    private Quaternion playerInitialRot;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        playerCar = GameObject.FindGameObjectWithTag("Player").transform;
+        playerCar.GetComponent<BoxCollider>().size = carProfile.size;
+        playerInitialPos = playerCar.position;
+        playerInitialRot = playerCar.rotation;
+
         // Find checkpoints
         Transform checkpointsParent = GameObject.FindGameObjectWithTag("Track")
             .transform.parent.Find("Checkpoints");
@@ -51,8 +59,6 @@ public class RaceManager : MonoBehaviour
                 checkpointsParent.GetChild(i).TryGetComponent(out turn);
             if (foundComponent) checkpoints.Add(turn);
         }
-        playerCar = GameObject.FindGameObjectWithTag("Player").transform;
-        playerCar.GetComponent<BoxCollider>().size = carProfile.size;
     }
 
     float CalculateLapTime(float timeToPassFinish)
@@ -100,6 +106,14 @@ public class RaceManager : MonoBehaviour
 
     void Update()
     {
+        // Reset logic
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            playerCar.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            playerCar.position = playerInitialPos;
+            playerCar.rotation = playerInitialRot;
+        }
+        // Check if car is on ground
         RaycastHit[] hits = Physics.BoxCastAll(
             playerCar.position, carProfile.size/2, -playerCar.up,
             playerCar.rotation, carProfile.size.y);
