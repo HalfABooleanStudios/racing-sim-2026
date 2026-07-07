@@ -2,15 +2,11 @@ using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Rendering.HighDefinition;
 using UnityEngine.InputSystem.XR.Haptics;
-using System.Threading;
+using System.Runtime.CompilerServices;
 
 public class Control : MonoBehaviour
 {
-
-    public CarProfile carProfile;
-
     public TMP_Text speedText;
     private Rigidbody rb;
     private InputAction inputMove;
@@ -18,6 +14,9 @@ public class Control : MonoBehaviour
 
     private const float mps_to_kmph = 3.6F;
 
+    private CarProfile carProfile {
+        get => RaceManager.Instance.carProfile;
+    }
 
     private float GetMaxSpeed(int direction)
     {

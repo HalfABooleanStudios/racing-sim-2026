@@ -3,6 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CarProfile", menuName = "Scriptable Objects/CarProfile")]
 public class CarProfile : ScriptableObject
 {
+    public Vector3 size;
+
     [Header("Accelerations")]
     public float accl;
     public float deccl;

@@ -21,7 +21,8 @@ public class RaceManager : MonoBehaviour
     public bool isOnGround { get; private set; }
     public bool isOnTrack { get; private set; }
 
-    [Header("Ground Qualities")]
+    [Header("Car & Track Qualities")]
+    public CarProfile carProfile = default;
     public GroundSpeedModifier asphaltModifier = default;
     public GroundSpeedModifier gravelModifier = default;
 
@@ -35,7 +36,6 @@ public class RaceManager : MonoBehaviour
     private float lastTimeToPassStart = float.NaN;
     private float bestLapTime = float.NaN;
     private Transform playerCar;
-    public Vector3 carSize;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -52,7 +52,7 @@ public class RaceManager : MonoBehaviour
             if (foundComponent) checkpoints.Add(turn);
         }
         playerCar = GameObject.FindGameObjectWithTag("Player").transform;
-        carSize = playerCar.GetComponent<BoxCollider>().size;
+        playerCar.GetComponent<BoxCollider>().size = carProfile.size;
     }
 
     float CalculateLapTime(float timeToPassFinish)
@@ -100,7 +100,9 @@ public class RaceManager : MonoBehaviour
 
     void Update()
     {
-        RaycastHit[] hits = Physics.BoxCastAll(playerCar.position, carSize/2, -playerCar.up, playerCar.rotation, carSize.y);
+        RaycastHit[] hits = Physics.BoxCastAll(
+            playerCar.position, carProfile.size/2, -playerCar.up,
+            playerCar.rotation, carProfile.size.y);
         isOnGround = hits.Length != 0;
         isOnTrack = false;
         foreach (RaycastHit hit in hits) {
