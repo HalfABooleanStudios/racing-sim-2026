@@ -24,11 +24,11 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 1
   planetRadius:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 6378.1
   renderingSpace:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 0
   centerMode:
     m_OverrideState: 1
     m_Value: 0
@@ -36,10 +36,10 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: {x: 0, y: -6378.1, z: 0}
   windOrientation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   windSpeed:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value: 0
   fogType:
     m_OverrideState: 1
