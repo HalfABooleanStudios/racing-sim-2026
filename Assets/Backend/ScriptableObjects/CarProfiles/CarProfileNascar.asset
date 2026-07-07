@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27f7a9171be6893408a98ac4abd705a5, type: 3}
   m_Name: CarProfileNascar
   m_EditorClassIdentifier: Assembly-CSharp::CarProfile
+  size: {x: 4, y: 1, z: 10}
   accl: 7.8431377
   deccl: 20
   decclIdle: 6.6666665
