@@ -11,15 +11,6 @@ public class Control : MonoBehaviour
 
     public CarProfile carProfile;
 
-    [Header("Ground Qualities")]
-    public GroundSpeedModifier asphaltModifier = default;
-    public GroundSpeedModifier gravelModifier = default;
-
-    private Vector3 carSize;
-    private GroundSpeedModifier currentModifier {
-        get => RaceManager.Instance.isOnTrack ? asphaltModifier : gravelModifier;
-    }
-
     public TMP_Text speedText;
     private Rigidbody rb;
     private InputAction inputMove;
@@ -30,8 +21,8 @@ public class Control : MonoBehaviour
 
     private float GetMaxSpeed(int direction)
     {
-        if (direction == 1) return carProfile.maxSpeedPos * currentModifier.maxSpeedPosMul;
-        if (direction == -1) return -carProfile.maxSpeedNeg * currentModifier.maxSpeedNegMul;
+        if (direction == 1) return carProfile.maxSpeedPos * RaceManager.Instance.currentModifier.maxSpeedPosMul;
+        if (direction == -1) return -carProfile.maxSpeedNeg * RaceManager.Instance.currentModifier.maxSpeedNegMul;
         return 0;
     }
 
@@ -40,13 +31,13 @@ public class Control : MonoBehaviour
         switch (magnitude)
         {
             case 1:
-                return carProfile.accl * currentModifier.acclMul;
+                return carProfile.accl * RaceManager.Instance.currentModifier.acclMul;
             case 0:
-                return -carProfile.decclIdle * currentModifier.decclIdleMul;
+                return -carProfile.decclIdle * RaceManager.Instance.currentModifier.decclIdleMul;
             case -1:
-                return -carProfile.deccl * currentModifier.decclMul;
+                return -carProfile.deccl * RaceManager.Instance.currentModifier.decclMul;
             case -2:
-                return -carProfile.decclBrake * currentModifier.decclBrakeMul;
+                return -carProfile.decclBrake * RaceManager.Instance.currentModifier.decclBrakeMul;
             default:
                 return 0;
         }
@@ -54,7 +45,7 @@ public class Control : MonoBehaviour
 
     private float GetTurnAccl()
     {
-        return carProfile.turnAcclByFriction * currentModifier.turnAcclByFrictionMul;
+        return carProfile.turnAcclByFriction * RaceManager.Instance.currentModifier.turnAcclByFrictionMul;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -84,7 +75,8 @@ public class Control : MonoBehaviour
             (moveCommand.y > 0 && localVelocity.z < GetMaxSpeed(1))
         ))
         {
-            localAccl.z = ((moveCommand.y * localVelocity.z > 0) ? GetAccl(1) : GetAccl(-1)) * Math.Sign(localVelocity.z);
+            localAccl.z = ((moveCommand.y * localVelocity.z >= 0) ? GetAccl(1) : GetAccl(-1))
+                * Math.Sign(localVelocity.z + float.Epsilon) * Math.Abs(moveCommand.y);
         } else
         {
             if (Math.Abs(localVelocity.z) < 0.5) localVelocity.z = 0;

@@ -21,6 +21,14 @@ public class RaceManager : MonoBehaviour
     public bool isOnGround { get; private set; }
     public bool isOnTrack { get; private set; }
 
+    [Header("Ground Qualities")]
+    public GroundSpeedModifier asphaltModifier = default;
+    public GroundSpeedModifier gravelModifier = default;
+
+    public GroundSpeedModifier currentModifier {
+        get => isOnTrack ? asphaltModifier : gravelModifier;
+    }
+
 
     private List<TurnTrackerScript> checkpoints = new();
     private List<TurnTrackerScript> checkpointsCrossed = new();
