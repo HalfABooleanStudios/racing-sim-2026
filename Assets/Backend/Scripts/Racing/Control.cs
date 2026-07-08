@@ -2,26 +2,24 @@ using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XR.Haptics;
-using System.Runtime.CompilerServices;
 
 public class Control : MonoBehaviour
 {
-    public TMP_Text speedText;
     private Rigidbody rb;
     private InputAction inputMove;
     private InputAction inputEBrake;
 
-    private const float mps_to_kmph = 3.6F;
-
     private CarProfile carProfile {
         get => RaceManager.Instance.carProfile;
+    }
+    private GroundSpeedModifier currentModifier {
+        get => RaceManager.Instance.currentModifier;
     }
 
     private float GetMaxSpeed(int direction)
     {
-        if (direction == 1) return carProfile.maxSpeedPos * RaceManager.Instance.currentModifier.maxSpeedPosMul;
-        if (direction == -1) return -carProfile.maxSpeedNeg * RaceManager.Instance.currentModifier.maxSpeedNegMul;
+        if (direction == 1) return carProfile.maxSpeedPos * currentModifier.maxSpeedPosMul;
+        if (direction == -1) return -carProfile.maxSpeedNeg * currentModifier.maxSpeedNegMul;
         return 0;
     }
 
@@ -30,13 +28,13 @@ public class Control : MonoBehaviour
         switch (magnitude)
         {
             case 1:
-                return carProfile.accl * RaceManager.Instance.currentModifier.acclMul;
+                return carProfile.accl * currentModifier.acclMul;
             case 0:
-                return -carProfile.decclIdle * RaceManager.Instance.currentModifier.decclIdleMul;
+                return -carProfile.decclIdle * currentModifier.decclIdleMul;
             case -1:
-                return -carProfile.deccl * RaceManager.Instance.currentModifier.decclMul;
+                return -carProfile.deccl * currentModifier.decclMul;
             case -2:
-                return -carProfile.decclBrake * RaceManager.Instance.currentModifier.decclBrakeMul;
+                return -carProfile.decclBrake * currentModifier.decclBrakeMul;
             default:
                 return 0;
         }
@@ -44,7 +42,7 @@ public class Control : MonoBehaviour
 
     private float GetTurnAccl()
     {
-        return carProfile.turnAcclByFriction * RaceManager.Instance.currentModifier.turnAcclByFrictionMul;
+        return carProfile.turnAcclByFriction * currentModifier.turnAcclByFrictionMul;
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -57,8 +55,7 @@ public class Control : MonoBehaviour
 
     void Update()
     {
-        Vector3 localVelocity = transform.worldToLocalMatrix * rb.linearVelocity;
-        speedText.text = Math.Round(localVelocity.z * mps_to_kmph, 1).ToString() + " km/h";
+        
     }
 
     void MoveFB(Vector3 moveCommand, ref Vector3 localVelocity, ref Vector3 localAccl)

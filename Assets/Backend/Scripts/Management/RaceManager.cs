@@ -94,8 +94,7 @@ public class RaceManager : MonoBehaviour
         if (turn.isFinish && !float.IsNaN(lastTimeToPassStart))
         {
             float lapTime = CalculateLapTime(turn.lastCrossedTime);
-            if (float.IsInfinity(lapTime));
-            else {
+            if (!float.IsInfinity(lapTime)) {
                 lapTimes.Add(lapTime);
                 if (lapTimes.Count > 5) lapTimes.RemoveAt(0);
                 if (float.IsNaN(bestLapTime) || lapTime < bestLapTime) bestLapTime = lapTime;
