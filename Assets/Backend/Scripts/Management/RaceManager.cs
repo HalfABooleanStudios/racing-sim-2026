@@ -31,11 +31,13 @@ public class RaceManager : MonoBehaviour
         get => isOnTrack ? asphaltModifier : gravelModifier;
     }
 
+    public float bestLapTime {get; private set;} = float.NaN;
+    public List<float> lapTimes {get; private set;} = new();
+
 
     private List<TurnTrackerScript> checkpoints = new();
     private List<TurnTrackerScript> checkpointsCrossed = new();
     private float lastTimeToPassStart = float.NaN;
-    private float bestLapTime = float.NaN;
     private Transform playerCar;
     private Vector3 playerInitialPos;
     private Quaternion playerInitialRot;
@@ -92,12 +94,12 @@ public class RaceManager : MonoBehaviour
         if (turn.isFinish && !float.IsNaN(lastTimeToPassStart))
         {
             float lapTime = CalculateLapTime(turn.lastCrossedTime);
-            if (float.IsInfinity(lapTime)) Debug.Log("DNF'd this lap");
-            if (float.IsNaN(bestLapTime) || lapTime < bestLapTime)
-            {
-                bestLapTime = lapTime;
+            if (float.IsInfinity(lapTime));
+            else {
+                lapTimes.Add(lapTime);
+                if (lapTimes.Count > 5) lapTimes.RemoveAt(0);
+                if (float.IsNaN(bestLapTime) || lapTime < bestLapTime) bestLapTime = lapTime;
             }
-            Debug.Log(lapTime);
             checkpointsCrossed.Clear();
         }
         if (turn.isStart) lastTimeToPassStart = turn.lastCrossedTime;
@@ -112,6 +114,7 @@ public class RaceManager : MonoBehaviour
             playerCar.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
             playerCar.position = playerInitialPos;
             playerCar.rotation = playerInitialRot;
+            checkpointsCrossed.Clear();
         }
         // Check if car is on ground
         RaycastHit[] hits = Physics.BoxCastAll(
