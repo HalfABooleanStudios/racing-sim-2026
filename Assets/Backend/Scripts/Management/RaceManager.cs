@@ -34,13 +34,15 @@ public class RaceManager : MonoBehaviour
     public float bestLapTime {get; private set;} = float.NaN;
     public List<float> lapTimes {get; private set;} = new();
 
-
-    private List<TurnTrackerScript> checkpoints = new();
-    private List<TurnTrackerScript> checkpointsCrossed = new();
-    private float lastTimeToPassStart = float.NaN;
+    [HideInInspector] public List<TurnTrackerScript> checkpoints
+        {get; private set; } = new();
+    [HideInInspector] public List<TurnTrackerScript> checkpointsCrossed
+        {get; private set; } = new();
+    public float lastTimeToPassStart {get; private set; } = float.NaN;
     private Transform playerCar;
     private Vector3 playerInitialPos;
     private Quaternion playerInitialRot;
+    public bool startComplete { get; private set; } = false;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -61,6 +63,7 @@ public class RaceManager : MonoBehaviour
                 checkpointsParent.GetChild(i).TryGetComponent(out turn);
             if (foundComponent) checkpoints.Add(turn);
         }
+        startComplete = true;
     }
 
     float CalculateLapTime(float timeToPassFinish)
