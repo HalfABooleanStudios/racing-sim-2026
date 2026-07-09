@@ -23,6 +23,7 @@ public class UIManager : MonoBehaviour
 
     private string LaptimeFloatToString(float lapTime)
     {
+        if (float.IsNaN(lapTime)) return "0.000";
         string str = "";
         bool showMinutes = lapTime > 60;
         if (showMinutes)

@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
+using NUnit.Framework;
 
 public class RaceManager : MonoBehaviour
 {
@@ -117,19 +118,22 @@ public class RaceManager : MonoBehaviour
             playerCar.position = playerInitialPos;
             playerCar.rotation = playerInitialRot;
             checkpointsCrossed.Clear();
+            lastTimeToPassStart = float.NaN;
         }
         // Check if car is on ground
         RaycastHit[] hits = Physics.BoxCastAll(
             playerCar.position, carProfile.size/2, -playerCar.up,
-            playerCar.rotation, carProfile.size.y);
-        isOnGround = hits.Length != 0;
+            playerCar.rotation, carProfile.size.y*0.1f);
+        isOnGround = false;
         isOnTrack = false;
         foreach (RaycastHit hit in hits) {
+            if (hit.transform.tag == "Ground") isOnGround = true;
             if (hit.transform.tag == "Track")
             {
                 isOnTrack = true;
                 break;
             }
         }
+        isOnGround = isOnGround || isOnTrack;
     }
 }

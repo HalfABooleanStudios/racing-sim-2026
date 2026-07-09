@@ -53,11 +53,6 @@ public class Control : MonoBehaviour
         inputEBrake = InputSystem.actions.FindAction("EBrake");
     }
 
-    void Update()
-    {
-        
-    }
-
     void MoveFB(Vector3 moveCommand, ref Vector3 localVelocity, ref Vector3 localAccl)
     {
         if (moveCommand.z == 1)
