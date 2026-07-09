@@ -1,3 +1,5 @@
+#if UNITY_EDITOR
+
 // CreateHDRPMaterialsFromBakedTextures.cs
 //
 // Builds one HDRP/Lit Material per part from the PBR textures baked out of
@@ -319,3 +321,5 @@ public static class CreateHDRPMaterialsFromBakedTextures
         return Path.Combine(projectRoot, assetPath);
     }
 }
+
+#endif
