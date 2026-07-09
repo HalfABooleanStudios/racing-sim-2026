@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance { get; private set; }
+
     public TMP_Text speedText;
     public TMP_Text fastestLapText;
     public List<TMP_Text> lapTimesTexts;
@@ -20,7 +21,6 @@ public class UIManager : MonoBehaviour
     private Rigidbody playerCarRB;
     private const float mps_to_kmph = 3.6F;
     public bool startComplete { get; private set; } = false;
-
     private string LaptimeFloatToString(float lapTime)
     {
         if (float.IsNaN(lapTime)) return "0.000";
@@ -45,6 +45,17 @@ public class UIManager : MonoBehaviour
             rt.anchoredPosition = new Vector2(xForFlag0 + i*spaceBetweenFlags, 0);
             checkpointFlags.Add(go);
         }
+    }
+
+    void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     void Start()

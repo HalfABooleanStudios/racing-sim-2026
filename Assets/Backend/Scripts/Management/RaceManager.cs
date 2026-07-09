@@ -11,7 +11,7 @@ public class RaceManager : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
+            Destroy(this);
             return;
         }
 
@@ -40,7 +40,7 @@ public class RaceManager : MonoBehaviour
     [HideInInspector] public List<TurnTrackerScript> checkpointsCrossed
         {get; private set; } = new();
     public float lastTimeToPassStart {get; private set; } = float.NaN;
-    private Transform playerCar;
+    public Transform playerCar { get; private set; }
     private Vector3 playerInitialPos;
     private Quaternion playerInitialRot;
     public bool startComplete { get; private set; } = false;
