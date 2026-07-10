@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
 using UnityEngine.InputSystem;
-using NUnit.Framework;
 
 public class RaceManager : MonoBehaviour
 {
@@ -95,15 +94,17 @@ public class RaceManager : MonoBehaviour
     public void FlagPlayerCrossedTurn(TurnTrackerScript turn)
     {   // Called by TurnTrackerScript (OnTriggerEnter) when player crosses a checkpoint
         if (!checkpoints.Contains(turn)) return;
-        if (turn.isFinish && !float.IsNaN(lastTimeToPassStart))
+        if (turn.isFinish)
         {
-            float lapTime = CalculateLapTime(turn.lastCrossedTime);
-            if (!float.IsInfinity(lapTime)) {
-                lapTimes.Add(lapTime);
-                if (lapTimes.Count > 5) lapTimes.RemoveAt(0);
-                if (float.IsNaN(bestLapTime) || lapTime < bestLapTime) bestLapTime = lapTime;
-            }
             checkpointsCrossed.Clear();
+            if (!float.IsNaN(lastTimeToPassStart)) {
+                float lapTime = CalculateLapTime(turn.lastCrossedTime);
+                if (!float.IsInfinity(lapTime)) {
+                    lapTimes.Add(lapTime);
+                    if (lapTimes.Count > 5) lapTimes.RemoveAt(0);
+                    if (float.IsNaN(bestLapTime) || lapTime < bestLapTime) bestLapTime = lapTime;
+                }
+            }
         }
         if (turn.isStart) lastTimeToPassStart = turn.lastCrossedTime;
         checkpointsCrossed.Add(turn);
