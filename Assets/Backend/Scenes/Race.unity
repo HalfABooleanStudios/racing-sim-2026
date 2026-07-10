@@ -295,7 +295,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 738d4499ffa25bc4c8c6671465c3c2d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0.475
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 738d4499ffa25bc4c8c6671465c3c2d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -781,7 +781,7 @@ Transform:
   m_GameObject: {fileID: 282575583}
   serializedVersion: 2
   m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 0, y: 1.5, z: 0.654}
+  m_LocalPosition: {x: 0, y: 1.025, z: 0.654}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1638,6 +1638,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 423660620}
   m_CullTransparentMesh: 1
+--- !u!1 &435104750
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 435104751}
+  m_Layer: 0
+  m_Name: Cam
+  m_TagString: CamParent
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &435104751
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 435104750}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1475067124}
+  m_Father: {fileID: 1994310649}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &474262676
 GameObject:
   m_ObjectHideFlags: 0
@@ -2694,7 +2726,6 @@ GameObject:
   - component: {fileID: 862614432}
   - component: {fileID: 862614431}
   - component: {fileID: 862614433}
-  - component: {fileID: 862614434}
   m_Layer: 0
   m_Name: Race Manager
   m_TagString: Untagged
@@ -2755,19 +2786,6 @@ MonoBehaviour:
   currentLapTimePanel: {fileID: 1314491103}
   checkpointFlagsPrefab: {fileID: 4993076407789432924, guid: 637b52193065489448c1ea65e5cb8278, type: 3}
   spaceBetweenFlags: 30
---- !u!114 &862614434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 862614430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4fe99de5ce42bf247bb44005016a0655, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GhostReadManager
-  captureRate: 10
 --- !u!1 &889435108
 GameObject:
   m_ObjectHideFlags: 0
@@ -4107,6 +4125,7 @@ GameObject:
   - component: {fileID: 1475067123}
   - component: {fileID: 1475067122}
   - component: {fileID: 1475067125}
+  - component: {fileID: 1475067126}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -4181,12 +4200,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1475067121}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.23344536, y: 0, z: 0, w: 0.97236997}
-  m_LocalPosition: {x: 0, y: 3.45, z: -5.39}
+  m_LocalRotation: {x: 0.23344536, y: -0, z: -0, w: 0.97236997}
+  m_LocalPosition: {x: 0, y: 3.4499998, z: -4.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1994310649}
+  m_Father: {fileID: 435104751}
   m_LocalEulerAnglesHint: {x: 27, y: 0, z: 0}
 --- !u!114 &1475067125
 MonoBehaviour:
@@ -4327,6 +4346,20 @@ MonoBehaviour:
       data1: 0
       data2: 0
   defaultFrameSettings: 0
+--- !u!114 &1475067126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1475067121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 84206aacfe3760e40becc4874d27999a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DynamicCam
+  camShiftMax: 2
+  fovShiftMax: 15
 --- !u!1001 &1620832572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5726,7 +5759,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1475067124}
+  - {fileID: 435104751}
   - {fileID: 282575584}
   - {fileID: 80852572}
   - {fileID: 202547080}
