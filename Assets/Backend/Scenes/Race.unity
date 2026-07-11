@@ -1670,7 +1670,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &435104751
 Transform:
   m_ObjectHideFlags: 0
@@ -4687,7 +4687,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1679362977
 Transform:
   m_ObjectHideFlags: 0
@@ -5770,6 +5770,7 @@ GameObject:
   - component: {fileID: 1994310646}
   - component: {fileID: 1994310651}
   - component: {fileID: 1994310650}
+  - component: {fileID: 1994310652}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -5856,6 +5857,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!114 &1994310652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1994310645}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f0ea5d9a437f0e4499d30d64459ea4a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  cameraParents: []
 --- !u!1001 &2015617326
 PrefabInstance:
   m_ObjectHideFlags: 0
