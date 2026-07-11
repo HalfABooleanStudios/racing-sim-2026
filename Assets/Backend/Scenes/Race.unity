@@ -4361,7 +4361,7 @@ MonoBehaviour:
   referenceSpeedKmph: 360
   maxZShift: 1
   maxFovShift: 6
-  rotShiftMax: 1
+  rotShiftMax: 15
 --- !u!1001 &1620832572
 PrefabInstance:
   m_ObjectHideFlags: 0
