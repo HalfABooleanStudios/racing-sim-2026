@@ -1,41 +1,49 @@
-using System;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class DynamicCam : MonoBehaviour
 {
-    public float camShiftMax = 2;
-    public float fovShiftMax = 15;
+    public float referenceSpeedKmph = 360;
+    public float maxZShift = 2;
+    public float maxFovShift = 15;
     public float rotShiftMax = 15;
 
-    private float camShift;
     private Rigidbody playerCarRB;
     private Transform camParent;
+    private Camera thisCam;
     private const float mps_to_kmph = 3.6F;
+    private float initialCamZ;
+    private float initialCamFov;
+    private float referenceSpeedMps
+        { get => referenceSpeedKmph / mps_to_kmph; }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         playerCarRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
         camParent = GameObject.FindGameObjectWithTag("CamParent").GetComponent<Transform>();
+        thisCam = GetComponent<Camera>();
+
+        initialCamZ = transform.localPosition.z;
+        initialCamFov = thisCam.fieldOfView;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Vector3 localVelocity = playerCarRB.transform.worldToLocalMatrix * playerCarRB.linearVelocity;
-        Vector3 localAngular = transform.worldToLocalMatrix * playerCarRB.angularVelocity;
-        camShift = (float)(-4.5 - (camShiftMax * localVelocity.z * mps_to_kmph / 360));
-        Vector3 pos = transform.localPosition;
-        pos.z = camShift;
-        transform.localPosition = pos;
+        Vector3 localPos = transform.localPosition;
+        Vector3 playerLocalVelocity = playerCarRB.transform.worldToLocalMatrix
+                                      * playerCarRB.linearVelocity;
+        Vector3 playerLocalAngular = transform.worldToLocalMatrix
+                                     * playerCarRB.angularVelocity;
 
-        Camera cam = GetComponent<Camera>();
-        cam.fieldOfView = 60 + (fovShiftMax * localVelocity.z * mps_to_kmph / 360);
+        localPos.z = initialCamZ - (maxZShift * playerLocalVelocity.z / referenceSpeedMps);
+        transform.localPosition = localPos;
+
+        thisCam.fieldOfView = initialCamFov + (maxFovShift * playerLocalVelocity.z / referenceSpeedMps);
+        
         camParent.localRotation = 
             Quaternion.Slerp(camParent.localRotation, 
-                             Quaternion.Euler(0, rotShiftMax * localAngular.y / (0.5F * Mathf.PI), 0), 
+                             Quaternion.Euler(0, rotShiftMax * playerLocalAngular.y / (0.5F * Mathf.PI), 0), 
                              Time.deltaTime);
 
     }

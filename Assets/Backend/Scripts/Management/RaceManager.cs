@@ -96,7 +96,6 @@ public class RaceManager : MonoBehaviour
         if (!checkpoints.Contains(turn)) return;
         if (turn.isFinish)
         {
-            checkpointsCrossed.Clear();
             if (!float.IsNaN(lastTimeToPassStart)) {
                 float lapTime = CalculateLapTime(turn.lastCrossedTime);
                 if (!float.IsInfinity(lapTime)) {
@@ -105,6 +104,7 @@ public class RaceManager : MonoBehaviour
                     if (float.IsNaN(bestLapTime) || lapTime < bestLapTime) bestLapTime = lapTime;
                 }
             }
+            checkpointsCrossed.Clear();
         }
         if (turn.isStart) lastTimeToPassStart = turn.lastCrossedTime;
         checkpointsCrossed.Add(turn);
@@ -115,7 +115,9 @@ public class RaceManager : MonoBehaviour
         // Reset logic
         if (Keyboard.current.rKey.wasPressedThisFrame)
         {
-            playerCar.GetComponent<Rigidbody>().linearVelocity = Vector3.zero;
+            Rigidbody rb = playerCar.GetComponent<Rigidbody>();
+            rb.linearVelocity = Vector3.zero;
+            rb.angularVelocity = Vector3.zero;
             playerCar.position = playerInitialPos;
             playerCar.rotation = playerInitialRot;
             checkpointsCrossed.Clear();
