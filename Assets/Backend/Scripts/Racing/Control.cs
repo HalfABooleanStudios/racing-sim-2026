@@ -78,10 +78,9 @@ public class Control : MonoBehaviour
     void Turn(Vector3 moveCommand, ref Vector3 localVelocity,
               ref Vector3 localAngular, ref Vector3 localAccl)
     {
-        float turnRadius = Math.Max(
-            localVelocity.z * localVelocity.z / GetTurnAccl(),
-            carProfile.turnRadiusV0); // With smartsteer
-        // float turnRadius = carProfile.turnRadiusV0; // Without smartsteer
+        float turnRadius = RaceManager.Instance.useSmartSteer?
+            Math.Max(localVelocity.z * localVelocity.z / GetTurnAccl(), carProfile.turnRadiusV0)
+            : carProfile.turnRadiusV0;
         localAngular.y = moveCommand.x * localVelocity.z / turnRadius;
 
         if (Math.Abs(localVelocity.x) < 0.5) localVelocity.x = 0;

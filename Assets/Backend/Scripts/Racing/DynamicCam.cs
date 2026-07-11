@@ -20,7 +20,7 @@ public class DynamicCam : MonoBehaviour
     void Start()
     {
         playerCarRB = GameObject.FindGameObjectWithTag("Player").GetComponent<Rigidbody>();
-        camParent = GameObject.FindGameObjectWithTag("CamParent").GetComponent<Transform>();
+        camParent = transform.parent.GetComponent<Transform>();
         thisCam = GetComponent<Camera>();
 
         initialCamZ = transform.localPosition.z;

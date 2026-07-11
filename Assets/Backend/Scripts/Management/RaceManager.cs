@@ -22,6 +22,8 @@ public class RaceManager : MonoBehaviour
     public bool isOnGround { get; private set; }
     public bool isOnTrack { get; private set; }
 
+    public bool useSmartSteer;
+
     [Header("Car & Track Qualities")]
     public CarProfile carProfile = default;
     public GroundSpeedModifier asphaltModifier = default;
