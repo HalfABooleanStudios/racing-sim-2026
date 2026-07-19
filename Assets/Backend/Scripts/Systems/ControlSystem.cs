@@ -3,6 +3,7 @@ using Unity.Physics;
 using Unity.Transforms;
 using Unity.Mathematics;
 using UnityEngine;
+using Unity.Collections;
 
 public partial class ControlSystem : SystemBase
 {
@@ -18,7 +19,9 @@ public partial class ControlSystem : SystemBase
             config = SystemAPI.GetSingleton<RaceConfig>(),
             deltaTime = SystemAPI.Time.DeltaTime
         };
-        controlJob.ScheduleParallel();
+        EntityQueryBuilder eqb = new(Allocator.Temp);
+        eqb = eqb.WithAllRW<PhysicsVelocity>().WithAll<CarState, LocalToWorld>();
+        controlJob.ScheduleParallelByRef(eqb.Build(this));
     }
 }
 
