@@ -1,10 +1,13 @@
 using Unity.Entities;
-using Unity.Physics;
 using Unity.Transforms;
 using Unity.Mathematics;
-using UnityEngine;
 using Unity.Collections;
+using Unity.Physics;
+using Unity.NetCode;
+using Unity.Physics.Systems;
 
+[UpdateInGroup(typeof(PredictedFixedStepSimulationSystemGroup))]
+[UpdateBefore(typeof(PhysicsSystemGroup))]
 public partial class ControlSystem : SystemBase
 {
     protected override void OnCreate()
@@ -20,8 +23,8 @@ public partial class ControlSystem : SystemBase
             deltaTime = SystemAPI.Time.DeltaTime
         };
         EntityQueryBuilder eqb = new(Allocator.Temp);
-        eqb = eqb.WithAllRW<PhysicsVelocity>().WithAll<CarState, LocalToWorld>();
-        controlJob.ScheduleParallelByRef(eqb.Build(this));
+        eqb = eqb.WithAllRW<PhysicsVelocity>().WithAll<CarState, LocalToWorld, Simulate>();
+        Dependency = controlJob.ScheduleParallelByRef(eqb.Build(this), Dependency);
     }
 }
 
