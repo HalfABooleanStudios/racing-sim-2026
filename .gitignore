@@ -7,7 +7,8 @@
 #
 .utmp/
 /[Ll]ibrary/
-/[Pp]ackages?/*/*
+[Pp]ackage/*/
+[Pp]ackages/*/
 /[Tt]emp/
 /[Oo]bj/
 /[Bb]uild/
