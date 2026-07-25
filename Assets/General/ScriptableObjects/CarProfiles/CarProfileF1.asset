@@ -21,3 +21,4 @@ MonoBehaviour:
   maxSpeedNeg: 10
   turnRadiusV0: 10
   turnAcclByFriction: 26.487
+  prefab: {fileID: 6255171405299892889, guid: e673c1bcee5d2614bb8c8dca0ab847bb, type: 3}

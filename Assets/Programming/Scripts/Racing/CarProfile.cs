@@ -24,6 +24,8 @@ public class CarProfile : ScriptableObject
     [Tooltip("in m/s^2; equal to mu * g")]
     public float turnAcclByFriction = 9.81F;
 
+    public GameObject prefab;
+
     public CarProfileComponent Convert()
     {
         return new() {

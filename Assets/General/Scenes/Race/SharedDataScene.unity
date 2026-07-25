@@ -119,7 +119,54 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1001 &181166804
+--- !u!1 &862614430
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 862614432}
+  - component: {fileID: 862614433}
+  m_Layer: 0
+  m_Name: Race Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &862614432
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862614430}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &862614433
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862614430}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20611cc874bc936439f9bc0dc6e6af41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RaceManagerAuthor
+  asphaltModifier: {fileID: 11400000, guid: 6af001b0a9bb56a40938e359a7825297, type: 2}
+  gravelModifier: {fileID: 11400000, guid: 1a083cc0cb20bff41b731d3dfbac55c9, type: 2}
+  carProfile: {fileID: 11400000, guid: 38d5bcd69270be446aba1b6d7c660135, type: 2}
+--- !u!1001 &1261978313
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -127,17 +174,13 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1160990454207315749, guid: 8815010e092e7844a9e43624a5160a2b, type: 3}
-      propertyPath: m_PrefabInstanceID
-      value: 181166804
-      objectReference: {fileID: 0}
     - target: {fileID: 1347219238323182426, guid: 8815010e092e7844a9e43624a5160a2b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1347219238323182426, guid: 8815010e092e7844a9e43624a5160a2b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1347219238323182426, guid: 8815010e092e7844a9e43624a5160a2b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -171,110 +214,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5910698358644050250, guid: 8815010e092e7844a9e43624a5160a2b, type: 3}
-      propertyPath: m_PrefabInstanceID
-      value: 181166804
-      objectReference: {fileID: 0}
     - target: {fileID: 8767471556149009846, guid: 8815010e092e7844a9e43624a5160a2b, type: 3}
       propertyPath: m_Name
-      value: Player
+      value: PlayerGhost
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8815010e092e7844a9e43624a5160a2b, type: 3}
---- !u!1 &862614430
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 862614432}
-  - component: {fileID: 862614431}
-  - component: {fileID: 862614433}
-  - component: {fileID: 862614434}
-  m_Layer: 0
-  m_Name: Race Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &862614431
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 862614430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec5f598e436a8a540b3b4c122c2c4179, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RaceManager
-  useSmartSteer: 1
-  carProfile: {fileID: 11400000, guid: 38d5bcd69270be446aba1b6d7c660135, type: 2}
-  asphaltModifier: {fileID: 11400000, guid: 6af001b0a9bb56a40938e359a7825297, type: 2}
-  gravelModifier: {fileID: 11400000, guid: 1a083cc0cb20bff41b731d3dfbac55c9, type: 2}
---- !u!4 &862614432
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 862614430}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &862614433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 862614430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ed8d57eba4f51644b2cc219b69b35f6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UIManager
-  speedText: {fileID: 0}
-  fastestLapText: {fileID: 0}
-  lapTimesTexts:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  currentLapTimePanel: {fileID: 0}
-  checkpointFlagsPrefab: {fileID: 4993076407789432924, guid: 637b52193065489448c1ea65e5cb8278, type: 3}
-  spaceBetweenFlags: 30
---- !u!114 &862614434
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 862614430}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd63de0d1bc700c4898e1411939e56b3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RaceManagerAuthor
-  asphaltModifier: {fileID: 11400000, guid: 6af001b0a9bb56a40938e359a7825297, type: 2}
-  gravelModifier: {fileID: 11400000, guid: 1a083cc0cb20bff41b731d3dfbac55c9, type: 2}
-  carProfile: {fileID: 11400000, guid: 38d5bcd69270be446aba1b6d7c660135, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 862614432}
-  - {fileID: 181166804}
+  - {fileID: 1261978313}

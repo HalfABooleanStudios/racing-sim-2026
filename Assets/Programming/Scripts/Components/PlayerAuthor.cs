@@ -1,16 +1,36 @@
 using System;
+using UnityEngine;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.NetCode;
 
+class PlayerAuthor : MonoBehaviour
+{
+    public class Baker : Baker<PlayerAuthor>
+    {
+        public override void Bake(PlayerAuthor author)
+        {
+            Entity entity = GetEntity(TransformUsageFlags.Dynamic);
+            AddComponent<TagCar>(entity);
+            AddComponent<TagPlayerCar>(entity);
+            
+            AddBuffer<CheckpointCarData>(entity);
+            AddBuffer<LapTime>(entity);
+
+            AddComponent(entity, CarState.Default);
+        }
+    }
+}
+
+
+
 public struct TagCar : IComponentData {}
 public struct TagPlayerCar : IComponentData {}
 public struct TagGhostCar : IComponentData {}
+public struct TagHasLinkedGO : IComponentData {}
 
 public struct TagCheckpoint : IComponentData {}
 public struct TagTrack : IComponentData {}
-
-
 
 
 
