@@ -1001,7 +1001,7 @@ MonoBehaviour:
   referenceSpeedKmph: 360
   maxZShift: 0
   maxFovShift: 5
-  rotShiftMax: 0
+  rotShiftMax: -5
 --- !u!1 &326012595
 GameObject:
   m_ObjectHideFlags: 0
@@ -4379,7 +4379,7 @@ MonoBehaviour:
   referenceSpeedKmph: 360
   maxZShift: 0.5
   maxFovShift: 6
-  rotShiftMax: 15
+  rotShiftMax: 8
 --- !u!1001 &1620832572
 PrefabInstance:
   m_ObjectHideFlags: 0
