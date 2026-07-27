@@ -1,6 +1,8 @@
+using UnityEngine;
 using Unity.Entities;
 using Unity.NetCode;
 
+[WorldSystemFilter(WorldSystemFilterFlags.ClientSimulation)]
 public partial struct ClientEnterGameSystem : ISystem
 {
     public void OnUpdate(ref SystemState state)
@@ -13,7 +15,11 @@ public partial struct ClientEnterGameSystem : ISystem
         {
             ecb.AddComponent<NetworkStreamInGame>(entity);
 
-            Entity rpc; // TODO: this
+            Debug.Log("Sending connect RPC");
+
+            Entity rpc = ecb.CreateEntity();
+            ecb.AddComponent<GoInGameRPC>(rpc);
+            ecb.AddComponent(rpc, new SendRpcCommandRequest() { TargetConnection = entity });
         }
         ecb.Playback(state.EntityManager);
     }
