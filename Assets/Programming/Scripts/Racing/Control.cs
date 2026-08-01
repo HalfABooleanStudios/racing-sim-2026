@@ -2,12 +2,21 @@ using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Unity.Entities;
+using Unity.NetCode;
+using Unity.Collections;
+using Unity.Transforms;
 
 public class Control : MonoBehaviour
 {
     private Rigidbody rb;
     private InputAction inputMove;
     private InputAction inputEBrake;
+
+    private EntityManager entityManager;
+    [SerializeField]
+    private Entity carEntity;
+    private LocalTransform carTransform;
 
     private CarProfile carProfile {
         get => RaceManager.Instance.carProfile;
@@ -45,12 +54,41 @@ public class Control : MonoBehaviour
         return carProfile.turnAcclByFriction * currentModifier.turnAcclByFrictionMul;
     }
 
+    private void SetCarEntity()
+    {
+        EntityQuery query = entityManager.CreateEntityQuery(typeof(PlayerGORef));
+        NativeArray<Entity> entities = query.ToEntityArray(Allocator.Temp);
+        if (entities.Length < 1) return;
+        carEntity = entities[0];
+        entities.Dispose();
+    }
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
         inputMove = InputSystem.actions.FindAction("Move");
         inputEBrake = InputSystem.actions.FindAction("EBrake");
+
+        foreach (World world in World.All)
+        {
+            if (world.IsClient() && !world.IsThinClient())
+            {
+                entityManager = world.EntityManager;
+                break;
+            }
+        }
+    }
+
+    void Update()
+    {
+        if (entityManager.Exists(carEntity))
+        {
+            entityManager.SetComponentData(carEntity, LocalTransform.FromPositionRotation(
+                transform.position, transform.rotation
+                ));
+        }
+        else SetCarEntity();
     }
 
     void MoveFB(Vector3 moveCommand, ref Vector3 localVelocity, ref Vector3 localAccl)

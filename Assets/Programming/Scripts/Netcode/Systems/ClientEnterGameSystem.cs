@@ -19,7 +19,7 @@ public partial struct ClientEnterGameSystem : ISystem
 
             Entity rpc = ecb.CreateEntity();
             ecb.AddComponent<GoInGameRPC>(rpc);
-            ecb.AddComponent(rpc, new SendRpcCommandRequest() { TargetConnection = entity });
+            ecb.AddComponent<SendRpcCommandRequest>(rpc);
         }
         ecb.Playback(state.EntityManager);
     }
