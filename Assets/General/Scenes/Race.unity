@@ -2801,7 +2801,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &862614431
 MonoBehaviour:
@@ -5883,6 +5883,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db74461fce4690943a6ab1257e419c16, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Control
+  controls: {fileID: -944628639613478452, guid: 35845fe01580c41289b024647b1d1c53, type: 3}
 --- !u!54 &1994310651
 Rigidbody:
   m_ObjectHideFlags: 0

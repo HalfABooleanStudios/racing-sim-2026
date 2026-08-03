@@ -21,6 +21,9 @@ public partial struct ServerEnterGameSystem : ISystem
             Debug.Log("Client connected to server");
             ecb.AddComponent<NetworkStreamInGame>(rpcRequest.ValueRO.SourceConnection);
             ecb.DestroyEntity(entity);
+
+            ecb.AppendToBuffer(rpcRequest.ValueRO.SourceConnection,
+                new LinkedEntityGroup {Value = player});
         }
         ecb.Playback(state.EntityManager);
     }

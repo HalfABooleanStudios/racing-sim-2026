@@ -1,22 +1,21 @@
-using TMPro;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Unity.Entities;
 using Unity.NetCode;
 using Unity.Collections;
-using Unity.Transforms;
+using Unity.Mathematics;
 
 public class Control : MonoBehaviour
 {
     private Rigidbody rb;
+    public InputActionAsset controls;
     private InputAction inputMove;
     private InputAction inputEBrake;
+    private Vector3 moveCommand;
 
     private EntityManager entityManager;
-    [SerializeField]
-    private Entity carEntity;
-    private LocalTransform carTransform;
+    [SerializeField] private Entity ghostEntity;
 
     private CarProfile carProfile {
         get => RaceManager.Instance.carProfile;
@@ -54,12 +53,11 @@ public class Control : MonoBehaviour
         return carProfile.turnAcclByFriction * currentModifier.turnAcclByFrictionMul;
     }
 
-    private void SetCarEntity()
+    private void SetGhostEntity()
     {
-        EntityQuery query = entityManager.CreateEntityQuery(typeof(PlayerGORef));
+        EntityQuery query = entityManager.CreateEntityQuery(typeof(GhostOwnerIsLocal), typeof(Simulate));
         NativeArray<Entity> entities = query.ToEntityArray(Allocator.Temp);
-        if (entities.Length < 1) return;
-        carEntity = entities[0];
+        if (entities.Length > 0) { Debug.Log(entities.Length); ghostEntity = entities[0]; }
         entities.Dispose();
     }
 
@@ -67,8 +65,8 @@ public class Control : MonoBehaviour
     void Start()
     {
         rb = gameObject.GetComponent<Rigidbody>();
-        inputMove = InputSystem.actions.FindAction("Move");
-        inputEBrake = InputSystem.actions.FindAction("EBrake");
+        inputMove = controls.FindAction("Move");
+        inputEBrake = controls.FindAction("EBrake");
 
         foreach (World world in World.All)
         {
@@ -80,15 +78,26 @@ public class Control : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        if (controls != null) controls.Enable();
+    }
+
     void Update()
     {
-        if (entityManager.Exists(carEntity))
+        if (entityManager.Exists(ghostEntity))
         {
-            entityManager.SetComponentData(carEntity, LocalTransform.FromPositionRotation(
-                transform.position, transform.rotation
-                ));
+            entityManager.SetComponentData(ghostEntity, new PlayerInput
+            {
+                commandedPos = transform.position,
+                commandedRot = ((quaternion) transform.rotation).value
+            });
         }
-        else SetCarEntity();
+        else SetGhostEntity();
+
+        moveCommand = inputMove.ReadValue<Vector2>();
+        moveCommand.z = inputEBrake.ReadValue<float>();
+        // moveCommand: x::turn, y::accl, z::(e)brake
     }
 
     void MoveFB(Vector3 moveCommand, ref Vector3 localVelocity, ref Vector3 localAccl)
@@ -128,10 +137,6 @@ public class Control : MonoBehaviour
     void FixedUpdate()
     {
         if (!RaceManager.Instance.isOnGround) return;
-
-        Vector3 moveCommand = inputMove.ReadValue<Vector2>();
-        moveCommand.z = inputEBrake.ReadValue<float>();
-        // moveCommand: x::turn, y::accl, z::(e)brake
 
         Vector3 localVelocity = transform.worldToLocalMatrix * rb.linearVelocity;
         Vector3 localAngular = transform.worldToLocalMatrix * rb.angularVelocity;
